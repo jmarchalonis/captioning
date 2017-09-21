@@ -60,10 +60,14 @@ class WebvttFile extends File
             ++$i;
         }
 
+        $previousLine = $line;
         // Skip blank lines after signature.
         while ($line === '') {
+            if( $line === '' ) {
+              ++$i;  
+            }
+
             $line = $this->getNextValueFromArray($fileContentArray);
-            ++$i;
         }
 
         $note = '';
@@ -109,6 +113,8 @@ class WebvttFile extends File
                 $note = $id = '';
                 $this->addCue($cue);
                 unset($cue);
+            } elseif( empty($previousLine) && $timecode_match == 0 ) {
+
             } elseif ($line !== '') {
                 // Supposse what not empty line before timeline is id.
                 $id = $line;
